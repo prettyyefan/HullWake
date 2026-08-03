@@ -1,0 +1,13 @@
+_base_: hullwake_r50_fpn.yaml
+
+experiment:
+  name: hullwake_r50_fpn_4070
+
+data:
+  workers: 4
+
+train:
+  images_per_gpu: 1
+  gradient_accumulation_steps: 16
+  effective_batch_size: 16
+  amp: true

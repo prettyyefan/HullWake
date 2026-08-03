@@ -1,0 +1,82 @@
+experiment:
+  name: hullwake_r50_fpn
+  output_root: outputs
+  seed: 0
+  deterministic: true
+
+data:
+  train_images: data/curated_wake/images/train
+  train_annotations: data/curated_wake/annotations/curated_wake_train.json
+  val_images: data/curated_wake/images/val
+  val_annotations: data/curated_wake/annotations/curated_wake_val.json
+  test_images: data/curated_wake/images/test
+  test_annotations: data/curated_wake/annotations/curated_wake_test.json
+  num_classes: 2
+  require_wake_masks: true
+  horizontal_flip_probability: 0.5
+  workers: 8
+
+model:
+  backbone: resnet50_fpn
+  pretrained_backbone: true
+  min_size: 800
+  max_size: 1333
+  embedding_dim: 256
+  fpn_levels: [0, 1, 2, 3]
+  fpn_strides: [4, 8, 16, 32]
+  corridor_points_per_direction: 64
+  corridor_grid_size: 8
+  length_max_ratio: 3.0
+  width_max_ratio: 1.0
+  directional_bias_parallel_init: 1.0
+  directional_bias_perpendicular_init: 1.0
+  score_threshold: 0.05
+  nms_threshold: 0.5
+  detections_per_image: 100
+  use_wake_extractor: true
+  use_wake_fusion: true
+  detach_wake_in_consistency: true
+
+loss:
+  beta_wake: 1.0
+  beta_cons: 1.0
+  beta_dom: 1.0
+  beta_dec: 0.05
+  lambda_neg: 1.0
+  lambda_att: 0.5
+  dominance_margin: 0.2
+  epsilon: 0.01
+  hard_negative_extra_weight: 1.0
+  hard_negative_point_fraction: 0.10
+  enable_wake_supervision: true
+  enable_consistency: true
+  enable_dominance: true
+  enable_decorrelation: true
+
+train:
+  device: cuda
+  epochs: 24
+  images_per_gpu: 4
+  gradient_accumulation_steps: 4
+  effective_batch_size: 16
+  optimizer: sgd
+  learning_rate: 0.02
+  momentum: 0.9
+  weight_decay: 0.0001
+  warmup_iterations: 1000
+  warmup_factor: 0.001
+  lr_milestones: [16, 22]
+  lr_gamma: 0.1
+  amp: true
+  gradient_clip_norm: 10.0
+  evaluate_every: 1
+  save_every: 1
+  log_every: 20
+
+evaluation:
+  score_threshold: 0.50
+  match_iou_threshold: 0.50
+  wake_like_box_coverage_threshold: 0.25
+  max_detections_per_image: 100
+  group_attributes: [clear_wake, weak_no_wake]
+  exclude_ambiguous_from_groups: true

@@ -1,0 +1,11 @@
+_base_: ../hullwake_r50_fpn.yaml
+experiment:
+  name: ablation_naive_wake_fusion
+model:
+  use_wake_extractor: true
+  use_wake_fusion: true
+loss:
+  enable_wake_supervision: false
+  enable_consistency: false
+  enable_dominance: false
+  enable_decorrelation: false

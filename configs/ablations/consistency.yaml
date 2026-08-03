@@ -1,0 +1,8 @@
+_base_: ../hullwake_r50_fpn.yaml
+experiment:
+  name: ablation_consistency
+loss:
+  enable_wake_supervision: false
+  enable_consistency: true
+  enable_dominance: false
+  enable_decorrelation: false

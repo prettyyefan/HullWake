@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hullwake"
+version = "1.0.0"
+description = "Hull-first wake-second maritime vessel detection"
+readme = "README.md"
+requires-python = ">=3.9,<3.12"
+license = {text = "MIT"}
+authors = [
+  {name = "Yefan Wang"},
+  {name = "Xingyu Wang"},
+  {name = "Ruibiao Zhu"},
+  {name = "Yusen Wu"},
+]
+dependencies = [
+  "numpy==1.26.4",
+  "Pillow==10.2.0",
+  "PyYAML==6.0.1",
+  "pycocotools==2.0.7",
+  "tqdm==4.66.2",
+]
+
+[project.optional-dependencies]
+train = ["torch==2.2.2", "torchvision==0.17.2"]
+dev = ["pytest==8.1.1", "ruff==0.3.4"]
+
+[tool.setuptools.packages.find]
+include = ["hullwake*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["slow: end-to-end model smoke tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
