@@ -36,3 +36,7 @@ weights/
 *.zip
 
 !docs/*.png
+# Allow ICIG 2026 presentation materials
+!assets/
+!assets/icig2026/
+!assets/icig2026/*.MOV
