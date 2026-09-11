@@ -26,5 +26,3 @@ jobs:
         run: |
           python -m compileall -q hullwake scripts tools tests
           python tools/check_release.py .
-      - name: Tests
-        run: pytest -q

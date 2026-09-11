@@ -26,6 +26,7 @@ weights/
 *.mp4
 *.avi
 *.mov
+*.MOV
 *.jpg
 *.jpeg
 *.png
