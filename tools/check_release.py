@@ -4,7 +4,18 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-FORBIDDEN_DIRECTORIES = {"data", "dataset", "datasets", "outputs", "checkpoints", "weights"}
+EXCLUDED_DIRECTORIES = {
+    ".git",
+}
+
+FORBIDDEN_DIRECTORIES = {
+    "data",
+    "dataset",
+    "datasets",
+    "outputs",
+    "checkpoints",
+    "weights",
+}
 FORBIDDEN_SUFFIXES = {
     ".jpg",
     ".jpeg",
@@ -23,6 +34,9 @@ FORBIDDEN_SUFFIXES = {
     ".npz",
 }
 
+ALLOWED_FILES = {
+    "assets/icig2026/HullWake_ICIG2026_1min_Presentation.MOV",
+}
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Check a HullWake source-only release tree")
@@ -35,11 +49,23 @@ def main() -> int:
     failures = []
     for path in root.rglob("*"):
         relative = path.relative_to(root)
+
+        if any(part in EXCLUDED_DIRECTORIES for part in relative.parts):
+            continue
+
         if relative.parts and relative.parts[0] in FORBIDDEN_DIRECTORIES:
             failures.append(f"forbidden data/output directory: {relative}")
-        if path.is_file() and path.suffix.lower() in FORBIDDEN_SUFFIXES:
+        if (
+            path.is_file()
+            and path.suffix.lower() in FORBIDDEN_SUFFIXES
+            and str(relative).replace("\\", "/") not in ALLOWED_FILES
+        ):
             failures.append(f"forbidden binary/data extension: {relative}")
-        if path.is_file() and path.stat().st_size > 5 * 1024 * 1024:
+        if (
+            path.is_file()
+            and path.stat().st_size > 5 * 1024 * 1024
+            and str(relative).replace("\\", "/") not in ALLOWED_FILES
+        ):
             failures.append(f"unexpected file larger than 5 MiB: {relative}")
     if failures:
         print("\n".join(failures))

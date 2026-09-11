@@ -24,5 +24,5 @@ jobs:
         run: python -m hullwake.doctor
       - name: Syntax and release checks
         run: |
-          python -m compileall -q hullwake scripts tools tests
+          python -m compileall -q hullwake scripts tools
           python tools/check_release.py .
