@@ -182,6 +182,14 @@ python scripts/train.py --config configs/ablations/dominance.yaml
 python scripts/train.py --config configs/ablations/decorrelation.yaml
 ```
 
+## ICIG 2026 Poster Presentation
+
+**Paper:**  
+*Hull First, Wake Second: Wake-Reliance Suppression for Robust Maritime Vessel Detection*
+
+**Resources:**  
+- [1-Minute Video Presentation](assets/icig2026/HullWake_ICIG2026_1min_Presentation.MOV)  
+
 ## Citation
 
 ```bibtex
